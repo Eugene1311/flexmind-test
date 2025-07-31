@@ -1,0 +1,35 @@
+name: flex-mind-test
+
+services:
+  mongo:
+    image: mongo:8.0.12
+    restart: on-failure
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - 27017:27017
+
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    restart: on-failure
+    environment:
+      ELASTIC_PASSWORD: password
+      discovery.type: single-node
+      cluster.name: elasticsearch
+      xpack.security.enabled: true
+      xpack.security.autoconfiguration.enabled: true
+      cluster.routing.allocation.disk.watermark.low: 95%
+      cluster.routing.allocation.disk.watermark.high: 98%
+      cluster.routing.allocation.disk.watermark.flood_stage: 98%
+    #      ingest.geoip.downloader.enabled: false
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9600:9600
+
+volumes:
+  elasticsearch_data:
+    driver: local
+  mongo_data:
+    driver: local

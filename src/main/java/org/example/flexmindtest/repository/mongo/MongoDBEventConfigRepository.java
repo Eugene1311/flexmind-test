@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,12 +31,18 @@ public class MongoDBEventConfigRepository implements EventConfigRepository {
 
     @Override
     public EventConfig updateEventConfigById(String id, EventConfig config) {
-        // todo
         return eventConfigMongoRepository.findById(id)
                 .map(configEntity -> {
-                    EventConfig configToUpdate = config.withId(id);
-                    EventConfigEntity entity = eventConfigMapper.toEntity(configToUpdate);
-                    EventConfigEntity updatedEntity = entity
+                    String eventType = Optional.ofNullable(config.eventType())
+                            .orElse(configEntity.getEventType());
+                    String source = Optional.ofNullable(config.source())
+                            .orElse(configEntity.getSource());
+                    boolean enabled = Optional.ofNullable(config.enabled())
+                            .orElse(configEntity.isEnabled());
+                    EventConfigEntity updatedEntity = configEntity
+                            .withEventType(eventType)
+                            .withSource(source)
+                            .withEnabled(enabled)
                             .withUpdatedAt(Instant.now());
                     EventConfigEntity saved = eventConfigMongoRepository.save(updatedEntity);
                     return eventConfigMapper.toModel(saved);

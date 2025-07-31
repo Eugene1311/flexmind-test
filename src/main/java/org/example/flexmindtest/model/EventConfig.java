@@ -9,7 +9,7 @@ public record EventConfig(
       String id,
       String eventType,
       String source,
-      boolean enabled,
+      Boolean enabled,
       Instant createdAt,
       Instant updatedAt
 ) {

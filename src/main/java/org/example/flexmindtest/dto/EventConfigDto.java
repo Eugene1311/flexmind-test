@@ -6,6 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public record EventConfigDto(
         String eventType,
         String source,
-        boolean enabled
+        Boolean enabled
 ) {
 }

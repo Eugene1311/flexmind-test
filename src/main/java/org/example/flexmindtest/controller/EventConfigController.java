@@ -5,12 +5,17 @@ import org.example.flexmindtest.dto.EventConfigDto;
 import org.example.flexmindtest.interfaces.EventConfigService;
 import org.example.flexmindtest.mapper.EventConfigMapper;
 import org.example.flexmindtest.model.EventConfig;
+import org.example.flexmindtest.model.EventConfigsFilter;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/event-config")
@@ -27,5 +32,14 @@ public class EventConfigController {
     @PutMapping("{id}")
     public EventConfig updateEventConfigById(@PathVariable String id, @RequestBody EventConfigDto config) {
         return eventConfigService.updateEventConfigById(id, eventConfigMapper.toModel(config));
+    }
+
+    @GetMapping
+    public List<EventConfig> getEventConfigs(
+            @RequestParam(required = false) String eventType,
+            @RequestParam(required = false) String source,
+            @RequestParam(required = false) Boolean enabled) {
+        EventConfigsFilter filter = new EventConfigsFilter(eventType, source, enabled);
+        return eventConfigService.getEventConfigs(filter);
     }
 }

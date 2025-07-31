@@ -8,6 +8,9 @@ import org.example.flexmindtest.model.EventConfig;
 import org.example.flexmindtest.model.EventConfigsFilter;
 import org.example.flexmindtest.repository.mongo.entity.EventConfigEntity;
 import org.example.flexmindtest.mapper.EventConfigMapper;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
@@ -19,6 +22,7 @@ import java.util.Optional;
 @Slf4j
 public class MongoDBEventConfigRepository implements EventConfigRepository {
     private final EventConfigMongoRepository eventConfigMongoRepository;
+    private final MongoTemplate mongoTemplate;
     private final EventConfigMapper eventConfigMapper;
 
     @Override
@@ -52,6 +56,19 @@ public class MongoDBEventConfigRepository implements EventConfigRepository {
 
     @Override
     public List<EventConfig> getEventConfigs(EventConfigsFilter filter) {
-        return null;
+        Query query = new Query();
+        if (filter.eventType() != null) {
+            query.addCriteria(Criteria.where("eventType").is(filter.eventType()));
+        }
+        if (filter.source() != null) {
+            query.addCriteria(Criteria.where("source").is(filter.source()));
+        }
+        if (filter.enabled() != null) {
+            query.addCriteria(Criteria.where("enabled").is(filter.enabled()));
+        }
+
+        return mongoTemplate.find(query, EventConfigEntity.class).stream()
+                .map(eventConfigMapper::toModel)
+                .toList();
     }
 }

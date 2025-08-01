@@ -14,12 +14,12 @@ import java.time.Instant;
 @Setter
 @AllArgsConstructor
 @With
-public class EventConfigEntity {
+public class EventConfigMongoEntity {
     @Id
-    String id;
-    String eventType;
-    String source;
-    boolean enabled;
-    Instant createdAt;
-    Instant updatedAt;
+    private String id;
+    private String eventType;
+    private String source;
+    private boolean enabled;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

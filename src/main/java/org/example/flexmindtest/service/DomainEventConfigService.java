@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class DomainEventConfigService implements EventConfigService {
+class DomainEventConfigService implements EventConfigService {
     private final EventConfigRepository eventConfigRepository;
 
     @Override

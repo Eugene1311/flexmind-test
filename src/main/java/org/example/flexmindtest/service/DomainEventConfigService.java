@@ -3,6 +3,7 @@ package org.example.flexmindtest.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.flexmindtest.interfaces.EventConfigService;
+import org.example.flexmindtest.interfaces.SubscriptionService;
 import org.example.flexmindtest.model.EventConfig;
 import org.example.flexmindtest.model.EventConfigsFilter;
 import org.example.flexmindtest.interfaces.EventConfigRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 @Slf4j
 class DomainEventConfigService implements EventConfigService {
     private final EventConfigRepository eventConfigRepository;
+    private final SubscriptionService subscriptionService;
 
     @Override
     public EventConfig addEventConfig(EventConfig config) {
@@ -23,7 +25,9 @@ class DomainEventConfigService implements EventConfigService {
 
     @Override
     public EventConfig updateEventConfigById(String id, EventConfig config) {
-        return eventConfigRepository.updateEventConfigById(id, config);
+        EventConfig updatedConfig = eventConfigRepository.updateEventConfigById(id, config);
+        subscriptionService.notifySubscribers(updatedConfig.eventType(), config);
+        return updatedConfig;
     }
 
     @Override

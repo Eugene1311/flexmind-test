@@ -9,6 +9,8 @@ import org.example.flexmindtest.repository.mongo.entity.SubscriptionMongoEntity;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @ConditionalOnProperty(name = "app.db", havingValue = "mongodb")
 @RequiredArgsConstructor
@@ -21,5 +23,12 @@ class MongoDBSubscriptionRepository implements SubscriptionRepository {
     public Subscription addSubscription(Subscription subscription) {
         SubscriptionMongoEntity saved = subscriptionMongoRepository.save(subscriptionMapper.toMongoEntity(subscription));
         return subscriptionMapper.toModel(saved);
+    }
+
+    @Override
+    public List<Subscription> getAllByEventType(String eventType) {
+        return subscriptionMongoRepository.findAllByEventType(eventType).stream()
+                .map(subscriptionMapper::toModel)
+                .toList();
     }
 }

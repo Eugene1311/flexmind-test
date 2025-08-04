@@ -19,7 +19,7 @@ class MongoDBSubscriptionRepository implements SubscriptionRepository {
 
     @Override
     public Subscription addSubscription(Subscription subscription) {
-        SubscriptionMongoEntity saved = subscriptionMongoRepository.save(subscriptionMapper.toEntity(subscription));
+        SubscriptionMongoEntity saved = subscriptionMongoRepository.save(subscriptionMapper.toMongoEntity(subscription));
         return subscriptionMapper.toModel(saved);
     }
 }

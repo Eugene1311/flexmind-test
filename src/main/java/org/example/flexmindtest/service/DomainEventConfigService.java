@@ -10,6 +10,9 @@ import org.example.flexmindtest.interfaces.EventConfigRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +36,12 @@ class DomainEventConfigService implements EventConfigService {
     @Override
     public List<EventConfig> getEventConfigs(EventConfigsFilter filter) {
         return eventConfigRepository.getEventConfigs(filter);
+    }
+
+    @Override
+    public Map<String, List<EventConfig>> getEventConfigsGroupedBySource() {
+        return eventConfigRepository.getEventConfigs(new EventConfigsFilter(null, null, null)).stream()
+                .filter(config -> Objects.nonNull(config.source()))
+                .collect(Collectors.groupingBy(EventConfig::source));
     }
 }

@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: flexmind-test
+  threads:
+    virtual:
+      enabled: true
+  elasticsearch:
+    username: elastic
+    password: password
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    org.springframework.data.elasticsearch: DEBUG
+
+app:
+  db: mongo

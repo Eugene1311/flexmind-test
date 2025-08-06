@@ -1,0 +1,20 @@
+group = 'org.example.flexmindtest'
+version = '0.0.1-SNAPSHOT'
+
+springBoot {
+    mainClass = "org.example.flexmindtest.core.FlexmindTestApplication"
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation project(':common')
+
+    implementation project(':elastic')
+    implementation project(':mongo')
+//    if (rootProject.property("db").equals("mongo")) {
+//        runtimeClasspath project(':mongo')
+//    } else if (project.property("db") == "elastic") {
+//        runtimeClasspath project(':elastic')
+//    }
+}

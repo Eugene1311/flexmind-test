@@ -1,1 +1,6 @@
 rootProject.name = 'flexmind-test'
+
+include 'core'
+include 'common'
+include 'mongo'
+include 'elastic'

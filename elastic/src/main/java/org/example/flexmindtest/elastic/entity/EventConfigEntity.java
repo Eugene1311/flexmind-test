@@ -3,6 +3,7 @@ package org.example.flexmindtest.elastic.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.With;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -16,6 +17,7 @@ import java.time.Instant;
 @Setter
 @AllArgsConstructor
 @With
+@ToString
 public class EventConfigEntity {
     @Id
     private String id;
